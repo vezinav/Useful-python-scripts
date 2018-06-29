@@ -1,0 +1,8 @@
+import maya.cmds as cmds
+
+sel = cmds.ls(sl=True)
+
+for each in sel:
+    cmds.select(each)
+    cmds.polyExtrudeFacet(ltz=0.025,d=3)
+ 
