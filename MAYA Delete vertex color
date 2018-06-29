@@ -1,0 +1,4 @@
+import maya.cmds as cmds
+
+sel = cmds.select(all=True)
+cmds.polyColorPerVertex( rem=True )   
