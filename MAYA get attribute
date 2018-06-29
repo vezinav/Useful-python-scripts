@@ -1,0 +1,5 @@
+import maya.cmds as cmds
+objects = cmds.ls(sl=True)
+for o in objects:
+    x_translate = cmds.getAttr(o + '.translateX')
+    print (x_translate)
