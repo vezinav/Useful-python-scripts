@@ -1,0 +1,35 @@
+import maya.cmds as cmds
+from functools import partial
+
+# Create the function to move
+def moveXYZ(slider, *args, **kwargs):
+    # slider is the name of the controller
+    # *args is to avoid a maya default argument passed trhought functions
+    # **kwargs is used to pass maya flags to the function in order to chose X, Y or Z axis
+
+    # the slider value is queried each time in order to refresh the value
+    value = getSliderValue(slider)
+    cmds.move(value, **kwargs)
+
+# slider get value, can fit any slider if you provide the name
+def getSliderValue(ctrlName):
+    value = cmds.intSlider(ctrlName, q=True, value=True)
+    return value
+
+#basic window
+cmds.window()    
+cmds.columnLayout( adjustableColumn=True )                                                
+# create the slider with a placeholder function
+mySlider = cmds.intSlider(min=-100, max=100, value=0, step=1, dc = 'empty')
+# now that the var mySlider is created, we can pass it as argument for our function
+# let's edit the function with functools.partial that allow us to pass some arguments to a function
+# Here we pass moveXYZ function then mySlider, the name of the X slider then x=1 to pass the flag to cmds.move(x=1)
+cmds.intSlider(mySlider, e=True, dc = partial(moveXYZ, mySlider, x=1))
+
+#redo it for all sliders
+# mySlider should be a dictionnary or at least a global, i.e :
+# uiDic = {}
+# uiDic['xslider'] = cmds.intSlider(min=-100, max=100, value=0, step=1, dc = 'empty')
+# cmds.intSlider(uiDic['xslider'], e=True, dc = partial(moveXYZ, uiDic['xslider'], x=1))
+
+cmds.showWindow()
